@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Merge Development to Staging') {
+                {
+                branch 'development'
+            }
+            steps {
+                bat '''
+                git checkout staging
+                git merge development
+                git push origin staging
+                '''
+            }
+        }
+        stage('Merge Staging to Production') {
+               {
+                branch 'staging'
+            }
+            steps {
+                bat '''
+                git checkout production
+                git merge staging
+                git push origin production
+                '''
+            }
+        }
+    }
+}
